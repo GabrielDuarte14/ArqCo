@@ -117,20 +117,37 @@ function getInputs() {
     var pergunta = perguntaResp[1].replace(' ', '');
     inputRender(pergunta.length)
     var inputs = document.getElementsByTagName('input');
-  
-
-
     inputs[0].focus()
+
     for (let i = 0; i < inputs.length; i++) {
+        
         inputs[i].onkeyup = function (evento) {
             if (evento.key == "Backspace") {
 
                 inputs[i - 1].focus();
 
             } else if ((i + 1) < inputs.length && this.value.length >= 1) {
-
+                palavraInserida += this.value;
                 inputs[i + 1].focus();
-
+                var divPai = ( inputs[i + 1].parentNode);
+                var idDiv = divPai.id;
+                var idDivNum = idDiv.replace('tentativa', '');
+                var idDivNumInt = parseInt(idDivNum);
+                console.log(idDivNumInt);
+                if (idDivNumInt == tentativa+1) {
+                   var result = checkAnswer();
+                   if(result){
+                         
+                   }else{
+                    tentativa++;
+                        
+                       var qtInputs = (divPai.children)
+                       console.log(qtInputs + ' -- tentativa' + (idDivNumInt) + ' palavra ' + palavraInserida);
+                       palavraInserida = '';
+                       for (let i = 0; i < inputs.length; i++) qtInputs[i].removeAttribute('readonly');
+                   }
+                }
+               
             }
 
             
@@ -157,8 +174,4 @@ function palavraValida() {
             console.log(error);
             return false;
         });
-}
-
-function checkAnswer(){
-
 }
