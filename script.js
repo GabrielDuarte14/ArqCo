@@ -1,5 +1,4 @@
-const perguntaResposta = [
-    {
+const perguntaResposta = [{
         "id": "1",
         "pergunta": "É a unidade central de processamento do Computador, ou seja, todo o tipo de processamento que seja demandado do computador, será executado lá.",
         "resposta": "CPU"
@@ -12,7 +11,7 @@ const perguntaResposta = [
     {
         "id": "3",
         "pergunta": "São memórias que armazenam BITS. Eles estão no topo da pirâmide de memória, sendo a mais rápida entre elas, já que se encontra mais perto da CPU.",
-        "resposta": "registradores"
+        "resposta": "REGISTRADORES"
     },
     {
         "id": "4",
@@ -47,17 +46,17 @@ const perguntaResposta = [
     {
         "id": "10",
         "pergunta": 'É o nome de uma linha de controle em eletrônica digital usada para selecionar um (ou um conjunto) de circuitos integrados (comumente chamados de "chips") entre vários conectados ao mesmo barramento de computador, geralmente utilizando a lógica de três estados.',
-        "resposta": " CS"
+        "resposta": "CS"
     },
     {
         "id": "11",
         "pergunta": "Serve para identificar o endereço do local no cache ou na memória principal que deve ser lido ou gravado.",
-        "resposta": "Adress Bus"
+        "resposta": "ADRESSBUS"
     },
     {
         "id": "12",
         "pergunta": "Um barramento de dados é um sistema dentro de um computador ou dispositivo, consistindo em um conector ou conjunto de fios, que fornece transporte de dados. Diferentes tipos de barramentos de dados evoluíram junto com computadores pessoais e outras peças de hardware. ",
-        "resposta": "Data Bus"
+        "resposta": "DATABUS"
     },
     {
         "id": "13",
@@ -72,43 +71,76 @@ const perguntaResposta = [
     {
         "id": "15",
         "pergunta": "Processador com quatro núcleos",
-        "resposta": "QUAD CORE"
+        "resposta": "QUADCORE"
     },
     {
         "id": "16",
         "pergunta": "Processador com dois núcleos",
-        "resposta": "DUAL CORE"
+        "resposta": "DUALCORE"
     }
 ]
 
-function getInputs() {
-    var inputs = document.getElementsByTagName('input');
-    inputs[0].focus()
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].onkeydown = function (evento) { 
-            if (evento.key == "Backspace") { 
-               
-                    inputs[i - 1].focus();
-                    
-                }
-           
-        
+function perguntaAleatoria() {
+    var id = Math.floor(Math.random() * perguntaResposta.length);
+    var pergunta = perguntaResposta[id].pergunta;
+    var resposta = perguntaResposta[id].resposta;
+    document.getElementById('dica').innerHTML = pergunta;
+    var pAndR = [pergunta, resposta];
+    return pAndR;
+}
+
+function inputRender(n){
+    for (var i = 1; i <= 5; i++) {
+        document.getElementById('tentativas').innerHTML += ` <div id="tentativa${i}" class="tentativax"> `
+        for (var a = 1; a <= n; a++) {
+            if (i == 1) {
+                document.getElementById(`tentativa${i}`).innerHTML += ` <input type="text" class="naosei"
+            maxlength="1"  id="letra${a}">`
+            } else {
+                document.getElementById(`tentativa${i}`).innerHTML += ` <input type="text" class="naosei"
+            maxlength="1"  id="letra${a}" readonly>`
+            }
         }
 
-          inputs[i].oninput = function (evento) { 
-            if (evento.key == "Backspace") { 
-               
-                    inputs[i - 1].focus();
-                    console.log(i)
-                }
-            else{
-                inputs[i + 1].focus()
-            }
-        
-        }
-       
+        document.getElementById('tentativas').innerHTML += '</div>'
     }
 }
+var perguntaResp = '';
+var tentativa = 1;
+var palavraInserida = '';
+
+function getInputs() {
+    
+
+    perguntaResp = perguntaAleatoria()
+    console.log(perguntaResp[0]);
+    var pergunta = perguntaResp[1].replace(' ', '');
+    inputRender(pergunta.length)
+    var inputs = document.getElementsByTagName('input');
+  
+
+
+    inputs[0].focus()
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].onkeyup = function (evento) {
+            if (evento.key == "Backspace") {
+
+                inputs[i - 1].focus();
+
+            } else if ((i + 1) < inputs.length && this.value.length >= 1) {
+
+                inputs[i + 1].focus();
+
+            }
+
+            
+        }
+
+
+
+    }
+}
+
 function palavraValida() {
     //request de dados web usando fetch
     const url = 'https://significado.herokuapp.com/v2/gay';
@@ -126,28 +158,7 @@ function palavraValida() {
             return false;
         });
 }
-var p1 = new Promise(function (resolve, reject) {
-    resolve("Success!");
-    // or
-    // reject ("Error!");
-});
 
-function maiuscula(e) {
-    var ss = e.target.selectionStart;
-    var se = e.target.selectionEnd;
-    e.target.value = e.target.value.toUpperCase();
-    e.target.selectionStart = ss;
-    e.target.selectionEnd = se;
-}
-
-function trocar(n) {
-    //trocar a input após inserir uma letra
-    if (n == 0) {
-
-    }
-    var id = "letra" + n;
-    console.log(id)
-    var input = document.getElementById(id);
-    input.focus();
+function checkAnswer(){
 
 }

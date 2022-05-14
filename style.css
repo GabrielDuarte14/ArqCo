@@ -49,14 +49,18 @@ body {
     font-size: 16px;
 }
 .tentativas{
-    height: min-content;
-    width: 40%;
+    height: max-content;
+    min-width: 40%;
+    max-width: 60%;
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     align-items: center;
+    justify-content: space-around;
 }
-
+.tentativax{
+    margin-bottom: 10px;
+}
 .tentativax input{
     width: 20px;
     height: 30px;
@@ -68,6 +72,7 @@ body {
     color: white;
     margin-left:20px ;
     text-transform: uppercase;
+  
 }
 input:focus{
     box-shadow: 0 0 0 0;
@@ -75,4 +80,7 @@ input:focus{
     outline: 0;
     border: 3px solid #636060;
     border-radius: 5px;
+    color: transparent;
+    text-shadow: 0 0 0 white;
+    border-bottom: white solid 3px;
 } 
