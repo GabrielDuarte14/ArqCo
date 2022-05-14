@@ -89,7 +89,7 @@ function perguntaAleatoria() {
     return pAndR;
 }
 
-function inputRender(n){
+function inputRender(n) {
     for (var i = 1; i <= 5; i++) {
         document.getElementById('tentativas').innerHTML += ` <div id="tentativa${i}" class="tentativax"> `
         for (var a = 1; a <= n; a++) {
@@ -110,17 +110,18 @@ var tentativa = 1;
 var palavraInserida = '';
 
 function getInputs() {
-    
+
 
     perguntaResp = perguntaAleatoria()
     console.log(perguntaResp[0]);
-    var pergunta = perguntaResp[1].replace(' ', '');
-    inputRender(pergunta.length)
+    
+    var resposta = perguntaResp[1].replace(' ', '');
+    inputRender(resposta.length)
     var inputs = document.getElementsByTagName('input');
     inputs[0].focus()
 
     for (let i = 0; i < inputs.length; i++) {
-        
+
         inputs[i].onkeyup = function (evento) {
             if (evento.key == "Backspace") {
 
@@ -129,34 +130,42 @@ function getInputs() {
             } else if ((i + 1) < inputs.length && this.value.length >= 1) {
                 palavraInserida += this.value;
                 inputs[i + 1].focus();
-                var divPai = ( inputs[i + 1].parentNode);
+                var divPai = (inputs[i + 1].parentNode);
                 var idDiv = divPai.id;
                 var idDivNum = idDiv.replace('tentativa', '');
                 var idDivNumInt = parseInt(idDivNum);
                 console.log(idDivNumInt);
-                if (idDivNumInt == tentativa+1) {
-                   var result = checkAnswer();
-                   if(result){
+                if (idDivNumInt == tentativa + 1) {
+                 
+                        for(var a = 0; a < inputs.length; a++){
+                            if(resposta.contains(palavraInserida[a])){
+                                inputs[a].style.backgroundColor = 'orange';
+                            }
+                           if(resposta[a] == palavraInserida[a]){
+                               inputs[a].style.backgroundColor = 'green';
+                           }else{
+                                 inputs[a].style.backgroundColor = 'red';
                          
-                   }else{
-                    tentativa++;
-                        
-                       var qtInputs = (divPai.children)
-                       console.log(qtInputs + ' -- tentativa' + (idDivNumInt) + ' palavra ' + palavraInserida);
-                       palavraInserida = '';
-                       for (let i = 0; i < inputs.length; i++) qtInputs[i].removeAttribute('readonly');
-                   }
+                        }
+                    }
+                    } else {
+                        tentativa++;
+                        var qtInputs = (divPai.children)
+                        console.log(qtInputs + ' -- tentativa' + (idDivNumInt) + ' palavra ' + palavraInserida);
+                        palavraInserida = '';
+                        for (let i = 0; i < inputs.length; i++) qtInputs[i].removeAttribute('readonly');
+                    }
                 }
-               
+
             }
 
-            
+
         }
 
 
 
     }
-}
+
 
 function palavraValida() {
     //request de dados web usando fetch
