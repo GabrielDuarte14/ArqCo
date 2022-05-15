@@ -51,12 +51,12 @@ const perguntaResposta = [{
     {
         "id": "11",
         "pergunta": "Serve para identificar o endereço do local no cache ou na memória principal que deve ser lido ou gravado.",
-        "resposta": "ADRESSBUS"
+        "resposta": "ADDRESS BUS"
     },
     {
         "id": "12",
         "pergunta": "Um barramento de dados é um sistema dentro de um computador ou dispositivo, consistindo em um conector ou conjunto de fios, que fornece transporte de dados. Diferentes tipos de barramentos de dados evoluíram junto com computadores pessoais e outras peças de hardware. ",
-        "resposta": "DATABUS"
+        "resposta": "DATA BUS"
     },
     {
         "id": "13",
@@ -71,12 +71,12 @@ const perguntaResposta = [{
     {
         "id": "15",
         "pergunta": "Processador com quatro núcleos",
-        "resposta": "QUADCORE"
+        "resposta": "QUAD CORE"
     },
     {
         "id": "16",
         "pergunta": "Processador com dois núcleos",
-        "resposta": "DUALCORE"
+        "resposta": "DUAL CORE"
     }
 ]
 
@@ -114,8 +114,11 @@ function getInputs() {
 
     perguntaResp = perguntaAleatoria()
     console.log(perguntaResp[0]);
-    
-    var resposta = perguntaResp[1].replace(' ', '');
+
+    var resposta = perguntaResp[1].replace(/\s/g, '');
+    var respostaApresentavel = perguntaResp[1]
+    resposta = resposta.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    console.log(resposta)
     inputRender(resposta.length)
     var inputs = document.getElementsByTagName('input');
     inputs[0].focus()
@@ -123,48 +126,68 @@ function getInputs() {
     for (let i = 0; i < inputs.length; i++) {
 
         inputs[i].onkeyup = function (evento) {
+            
             if (evento.key == "Backspace") {
-
+              
                 inputs[i - 1].focus();
 
             } else if ((i + 1) < inputs.length && this.value.length >= 1) {
-                palavraInserida += this.value;
+
                 inputs[i + 1].focus();
                 var divPai = (inputs[i + 1].parentNode);
+                var divAntesPai = (inputs[i].parentNode);
                 var idDiv = divPai.id;
                 var idDivNum = idDiv.replace('tentativa', '');
                 var idDivNumInt = parseInt(idDivNum);
                 console.log(idDivNumInt);
-                if (idDivNumInt == tentativa + 1) {
-                 
-                        for(var a = 0; a < inputs.length; a++){
-                            if(resposta.contains(palavraInserida[a])){
-                                inputs[a].style.backgroundColor = 'orange';
-                            }
-                           if(resposta[a] == palavraInserida[a]){
-                               inputs[a].style.backgroundColor = 'green';
-                           }else{
-                                 inputs[a].style.backgroundColor = 'red';
-                         
+                var qtInputs = (divAntesPai.children)
+                if (idDivNumInt == (tentativa + 1)) {
+                    for (let i = 0; i < qtInputs.length; i++){
+                         palavraInserida += qtInputs[i].value;
+                         qtInputs[i].setAttribute('readonly', 'true');
+                        }
+                    palavraInserida = palavraInserida.toLocaleUpperCase();
+
+                    tentativa++;
+                    console.log('tentativa ' + tentativa)
+                   
+
+                    for (var a = 0; a < resposta.length; a++) {
+                        if (resposta.includes(palavraInserida[a]) && (resposta[a] != palavraInserida[a])) {
+                            qtInputs[a].style.backgroundColor = 'orange';
+                        }
+                        console.log('letra: ' + resposta[a] + ' letra inserida ' + palavraInserida[a])
+                        if (resposta[a] == palavraInserida[a]) {
+                            qtInputs[a].style.backgroundColor = 'green';
+                        }
+                        if (!resposta.includes(palavraInserida[a])) {
+                            qtInputs[a].style.backgroundColor = 'red';
                         }
                     }
+                    if (palavraInserida == resposta) {
+                        alert('Parabéns você acertou a palavra é: ' + respostaApresentavel)
+                        location.reload();
                     } else {
-                        tentativa++;
                         var qtInputs = (divPai.children)
-                        console.log(qtInputs + ' -- tentativa' + (idDivNumInt) + ' palavra ' + palavraInserida);
                         palavraInserida = '';
-                        for (let i = 0; i < inputs.length; i++) qtInputs[i].removeAttribute('readonly');
+                        for (let i = 0; i < inputs.length; i++) {
+
+                            qtInputs[i].removeAttribute('readonly');
+                        }
+
+
                     }
                 }
-
             }
-
 
         }
 
 
-
     }
+
+
+
+}
 
 
 function palavraValida() {
