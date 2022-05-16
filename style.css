@@ -36,14 +36,14 @@ body {
 }
 
 .subHeader {
-    width: max-content;
+    width: 50vw;
     display: flex;
     margin-top: 30px;
     font-size: 20px;
 }
 
 .dica{
-    width: max-content;
+    width: 50vw;
     max-width: 40%;
     display: flex;
     background-color: #636060;
@@ -55,8 +55,8 @@ body {
 }
 .tentativas{
     height: max-content;
-    min-width: 40%;
-    max-width: 60%;
+    
+    width: 80%;
     display: flex;
     padding: 20px;
     flex-direction: column;
@@ -95,13 +95,15 @@ input:focus{
     display: flex;
     flex-direction: column;
     height: 10px;
+    width: 80%;
+    align-items: center;
+    padding-left: 20px;
+    
 }
 .instrucoes span{
     display: flex;
     flex-direction: row;
-    height: 20px;
-    align-items: center;
-    width: max-content ;
+    width: 50vw ;
     justify-content: flex-start;
     margin-bottom: 10px;
 }
