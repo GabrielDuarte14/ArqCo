@@ -199,7 +199,7 @@ function getInputs() {
         inputs[i].onkeyup = function (evento) {
 
             if (evento.key == "Backspace") {
-
+                inputs[i-1].value = ''
                 inputs[i - 1].focus();
 
             } else if ((i + 1) < inputs.length && this.value.length >= 1) {
