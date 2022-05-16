@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="dark.scss">
   
-    <link rel="shortcut icon" href="cpu.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="cpu.jpg" type="image/x-icon"> 
     <script src="./sweetalert2-11.4.14/package/dist/sweetalert2.all.js"></script>
   </head>
   <body onload="getInputs()">
@@ -25,7 +25,12 @@
      
         
       </div>
-      
+      <div class="instrucoes">
+        <span> <div class="vermelho"></div> <div> Vermelho - A palavra não contém essa letra.</div></span>
+        <span><div class="laranja"></div><div>Laranja - A palavra contém essa letra porém não nessa posição.</div></span>
+        <span><div class="verde"></div><div>Verde - A palavra contém essa letra e está na posição certa.</div></span>
+      </div>
     </div>
+    
   </body>
 </html>

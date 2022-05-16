@@ -50,7 +50,7 @@ body {
     padding: 20px;
     border-radius: 10px;
     margin-top: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 16px;
 }
 .tentativas{
@@ -90,3 +90,39 @@ input:focus{
     text-shadow: 0 0 0 white;
     border-bottom: white solid 3px;
 } 
+
+.instrucoes{
+    display: flex;
+    flex-direction: column;
+    height: 10px;
+}
+.instrucoes span{
+    display: flex;
+    flex-direction: row;
+    height: 20px;
+    align-items: center;
+    width: max-content ;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+.vermelho{
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: red;
+    border-radius: 20%;
+}
+.laranja{
+    width: 15px;
+    height: 15px;
+    border-radius: 20%;
+    margin-right: 10px;
+    background-color: orange;
+}
+.verde{
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 20%;
+    background-color: green;
+}
