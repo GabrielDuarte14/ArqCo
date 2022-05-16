@@ -40,7 +40,7 @@ const perguntaResposta = [{
     },
     {
         "id": "9",
-        "pergunta": "É um método que permite que um dispositivo de entrada e saída envie ou receba dados diretamente da memória principal, ignorando a CPU, acelerando as operações que envolvem a memória",
+        "pergunta": "É um método que permite que um dispositivo de entrada e saída envie ou receba dados diretamente da memória principal, ignorando a CPU, acelerando as operações que envolvem a memória.",
         "resposta": "DMA"
     },
     {
@@ -70,18 +70,22 @@ const perguntaResposta = [{
     },
     {
         "id": "15",
-        "pergunta": "Processador com quatro núcleos",
+        "pergunta": "Processador com quatro núcleos.",
         "resposta": "QUAD CORE"
     },
     {
         "id": "16",
-        "pergunta": "Processador com dois núcleos",
+        "pergunta": "Processador com dois núcleos.",
         "resposta": "DUAL CORE"
     }
 ]
+var idsSorteados = []
 
 function perguntaAleatoria() {
     var id = Math.floor(Math.random() * perguntaResposta.length);
+    if (idsSorteados.includes(id)) {
+        perguntaAleatoria()
+    }
     var pergunta = perguntaResposta[id].pergunta;
     var resposta = perguntaResposta[id].resposta;
     document.getElementById('dica').innerHTML = pergunta;
@@ -97,9 +101,15 @@ function inputRender(n) {
                 document.getElementById(`tentativa${i}`).innerHTML += ` <input type="text" class="naosei"
             maxlength="1"  id="letra${a}">`
             } else {
+                if (i == 5 && a == n) {
+                    document.getElementById(`tentativa${i}`).innerHTML += ` <input type="text" class="naosei"
+                    maxlength="1"  id="letra${a}" onkeyup='verultima()' readonly>`
+                }else{
                 document.getElementById(`tentativa${i}`).innerHTML += ` <input type="text" class="naosei"
             maxlength="1"  id="letra${a}" readonly>`
+        }
             }
+           
         }
 
         document.getElementById('tentativas').innerHTML += '</div>'
@@ -108,6 +118,68 @@ function inputRender(n) {
 var perguntaResp = '';
 var tentativa = 1;
 var palavraInserida = '';
+
+function verultima() {
+
+
+    var divPai = document.querySelectorAll('#tentativa5 input')
+    console.log(divPai)
+    for (let i = 0; i < divPai.length; i++) {
+        palavraInserida += divPai[i].value;
+        divPai[i].setAttribute('readonly', 'true');
+    }
+    palavraInserida = palavraInserida.toLocaleUpperCase();
+
+    tentativa++;
+    console.log('tentativa ' + tentativa)
+    var resposta = perguntaResp[1].replace(/\s/g, '');
+    resposta = resposta.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    for (var a = 0; a < resposta.length; a++) {
+        if (resposta.includes(palavraInserida[a]) && (resposta[a] != palavraInserida[a])) {
+            divPai[a].style.backgroundColor = 'orange';
+        }
+        console.log('letra: ' + resposta[a] + ' letra inserida ' + palavraInserida[a])
+        if (resposta[a] == palavraInserida[a]) {
+            divPai[a].style.backgroundColor = 'green';
+        }
+        if (!resposta.includes(palavraInserida[a])) {
+            divPai[a].style.backgroundColor = 'red';
+        }
+    }
+    if (palavraInserida == resposta) {
+        Swal.fire({
+            title: '<strong>Você acertou!</strong>',
+            icon: 'success',
+            html:`${perguntaResp[1]}: `+perguntaResp[0] + ' Aeeeeee, você acertou na 5ª tentativa!',
+            background: '#212121',
+            color: '#fff',
+            showCloseButton: true,
+            focusConfirm: false,
+            willClose: ()=>{
+                location.reload();
+            }                 
+          })
+    } else {
+        Swal.fire({
+            title: '<strong>Você errou!</strong>',
+            icon: 'error',
+            html:`${perguntaResp[1]}: `+perguntaResp[0] + ' Infelizmente você não conseguiu!',
+            background: '#212121',
+            color: '#fff',
+            showCloseButton: true,
+            focusConfirm: false,
+            willClose: ()=>{
+                location.reload();
+            }                 
+          })
+
+
+    }
+
+
+
+
+}
 
 function getInputs() {
 
@@ -124,11 +196,13 @@ function getInputs() {
     inputs[0].focus()
 
     for (let i = 0; i < inputs.length; i++) {
-
+        //nao colocar onkeyup no ultimo input
+        if (i == inputs.length - 1) {
+        } else {
         inputs[i].onkeyup = function (evento) {
-            
+
             if (evento.key == "Backspace") {
-              
+
                 inputs[i - 1].focus();
 
             } else if ((i + 1) < inputs.length && this.value.length >= 1) {
@@ -141,22 +215,22 @@ function getInputs() {
                 var idDivNumInt = parseInt(idDivNum);
                 console.log(idDivNumInt);
                 var qtInputs = (divAntesPai.children)
+                console.log('tentativa ' + tentativa + ' ta ' + (qtInputs[qtInputs.length - 2].value).length);
                 if (idDivNumInt == (tentativa + 1)) {
-                    for (let i = 0; i < qtInputs.length; i++){
-                         palavraInserida += qtInputs[i].value;
-                         qtInputs[i].setAttribute('readonly', 'true');
-                        }
+                    for (let i = 0; i < qtInputs.length; i++) {
+                        palavraInserida += qtInputs[i].value;
+                        qtInputs[i].setAttribute('readonly', 'true');
+                    }
                     palavraInserida = palavraInserida.toLocaleUpperCase();
 
                     tentativa++;
                     console.log('tentativa ' + tentativa)
-                   
+
 
                     for (var a = 0; a < resposta.length; a++) {
                         if (resposta.includes(palavraInserida[a]) && (resposta[a] != palavraInserida[a])) {
                             qtInputs[a].style.backgroundColor = 'orange';
                         }
-                        console.log('letra: ' + resposta[a] + ' letra inserida ' + palavraInserida[a])
                         if (resposta[a] == palavraInserida[a]) {
                             qtInputs[a].style.backgroundColor = 'green';
                         }
@@ -165,9 +239,22 @@ function getInputs() {
                         }
                     }
                     if (palavraInserida == resposta) {
-                        alert('Parabéns você acertou a palavra é: ' + respostaApresentavel)
-                        location.reload();
+                        Swal.fire({
+                            title: '<strong>Você acertou!</strong>',
+                            icon: 'success',
+                            html:`${perguntaResp[1]}: `+perguntaResp[0] + ` Aeeeeee, você acertou na ${tentativa-1}ª tentativa!`,
+                            background: '#212121',
+                            color: '#fff',
+                            showCloseButton: true,
+                            focusConfirm: false,
+                            willClose: ()=>{
+                                location.reload();
+                            }                 
+                          })
+                       // alert('Parabéns você acertou a palavra é: ' + respostaApresentavel)
+                        //location.reload();
                     } else {
+                        
                         var qtInputs = (divPai.children)
                         palavraInserida = '';
                         for (let i = 0; i < inputs.length; i++) {
@@ -182,28 +269,9 @@ function getInputs() {
 
         }
 
-
+    }
     }
 
 
 
-}
-
-
-function palavraValida() {
-    //request de dados web usando fetch
-    const url = 'https://significado.herokuapp.com/v2/gay';
-    fetch(url)
-        .then((resp) => resp.json())
-        .then(function (data) {
-            if (data.error) {
-                return false;
-            } else {
-                return true;
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-            return false;
-        });
 }
