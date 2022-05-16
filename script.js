@@ -123,7 +123,7 @@ function verultima() {
 
 
     var divPai = document.querySelectorAll('#tentativa5 input')
-    console.log(divPai)
+  
     for (let i = 0; i < divPai.length; i++) {
         palavraInserida += divPai[i].value;
         divPai[i].setAttribute('readonly', 'true');
@@ -131,14 +131,13 @@ function verultima() {
     palavraInserida = palavraInserida.toLocaleUpperCase();
 
     tentativa++;
-    console.log('tentativa ' + tentativa)
+    
     var resposta = perguntaResp[1].replace(/\s/g, '');
     resposta = resposta.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     for (var a = 0; a < resposta.length; a++) {
         if (resposta.includes(palavraInserida[a]) && (resposta[a] != palavraInserida[a])) {
             divPai[a].style.backgroundColor = 'orange';
         }
-        console.log('letra: ' + resposta[a] + ' letra inserida ' + palavraInserida[a])
         if (resposta[a] == palavraInserida[a]) {
             divPai[a].style.backgroundColor = 'green';
         }
@@ -185,12 +184,10 @@ function getInputs() {
 
 
     perguntaResp = perguntaAleatoria()
-    console.log(perguntaResp[0]);
-
+   
     var resposta = perguntaResp[1].replace(/\s/g, '');
     var respostaApresentavel = perguntaResp[1]
     resposta = resposta.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    console.log(resposta)
     inputRender(resposta.length)
     var inputs = document.getElementsByTagName('input');
     inputs[0].focus()
@@ -213,9 +210,7 @@ function getInputs() {
                 var idDiv = divPai.id;
                 var idDivNum = idDiv.replace('tentativa', '');
                 var idDivNumInt = parseInt(idDivNum);
-                console.log(idDivNumInt);
                 var qtInputs = (divAntesPai.children)
-                console.log('tentativa ' + tentativa + ' ta ' + (qtInputs[qtInputs.length - 2].value).length);
                 if (idDivNumInt == (tentativa + 1)) {
                     for (let i = 0; i < qtInputs.length; i++) {
                         palavraInserida += qtInputs[i].value;
@@ -224,8 +219,7 @@ function getInputs() {
                     palavraInserida = palavraInserida.toLocaleUpperCase();
 
                     tentativa++;
-                    console.log('tentativa ' + tentativa)
-
+                    
 
                     for (var a = 0; a < resposta.length; a++) {
                         if (resposta.includes(palavraInserida[a]) && (resposta[a] != palavraInserida[a])) {
